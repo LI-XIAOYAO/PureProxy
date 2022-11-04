@@ -10,6 +10,10 @@
 #### 安装
 > Install-Package PureProxy
 
+#### 注意项
+- 忽略代理添加 `IgnoreProxyAttribute` 特性
+- 类代理时需要定义为 `override`
+
 #### 示例
 
 ````
