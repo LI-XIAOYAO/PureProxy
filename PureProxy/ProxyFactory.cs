@@ -1,11 +1,9 @@
 ﻿using PureProxy.Attributes;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace PureProxy
 {
@@ -78,6 +76,16 @@ namespace PureProxy
                 throw new ArgumentNullException(nameof(implementationType));
             }
 
+            if (implementationType.IsSealed)
+            {
+                throw new ArgumentException($"Implementation type '{serviceType}' is sealed.");
+            }
+
+            if (implementationType.IsAbstract)
+            {
+                throw new ArgumentException($"Implementation type '{serviceType}' is abstract.");
+            }
+
             if (implementationType.IsDefined(typeof(IgnoreProxyAttribute)))
             {
                 return implementationType;
@@ -93,7 +101,7 @@ namespace PureProxy
                 throw new ArgumentException($"Implementation type '{implementationType}' can't be converted to service type '{serviceType}'.");
             }
 
-            if (!serviceType.IsInterface)
+            if (!serviceType.IsInterface && serviceType == implementationType)
             {
                 if (serviceType.IsSealed)
                 {
@@ -106,21 +114,16 @@ namespace PureProxy
                 }
             }
 
-            if (implementationType.IsSealed)
-            {
-                throw new ArgumentException($"Implementation type '{serviceType}' is sealed.");
-            }
-
-            if (implementationType.IsAbstract)
-            {
-                throw new ArgumentException($"Implementation type '{serviceType}' is abstract.");
-            }
-
             var typeName = $"{_moduleBuilder.Assembly.GetName().Name}.{serviceType.FullName}Proxy";
             var type = _moduleBuilder.GetType(typeName);
             if (null != type)
             {
                 return type;
+            }
+
+            if (!serviceType.IsInterface && serviceType != implementationType)
+            {
+                serviceType = implementationType;
             }
 
             var typeBuilder = _moduleBuilder.DefineType(typeName, TypeAttributes.Public, serviceType.IsInterface ? null : serviceType);

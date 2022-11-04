@@ -2,9 +2,7 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using PureProxy.Attributes;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
 namespace PureProxy.Options
 {
@@ -125,6 +123,16 @@ namespace PureProxy.Options
                 throw new ArgumentNullException(nameof(implementationType));
             }
 
+            if (implementationType.IsSealed)
+            {
+                throw new ArgumentException($"Implementation type '{serviceType}' is sealed.");
+            }
+
+            if (implementationType.IsAbstract)
+            {
+                throw new ArgumentException($"Implementation type '{serviceType}' is abstract.");
+            }
+
             if (implementationType.IsDefined(typeof(IgnoreProxyAttribute)))
             {
                 Services.TryAdd(ServiceDescriptor.Describe(serviceType, implementationType, lifetime));
@@ -137,7 +145,7 @@ namespace PureProxy.Options
                 throw new ArgumentException($"Implementation type '{implementationType}' can't be converted to service type '{serviceType}'.");
             }
 
-            if (!serviceType.IsInterface)
+            if (!serviceType.IsInterface && serviceType == implementationType)
             {
                 if (serviceType.IsSealed)
                 {
@@ -148,16 +156,6 @@ namespace PureProxy.Options
                 {
                     throw new ArgumentException($"Service type '{serviceType}' is abstract.");
                 }
-            }
-
-            if (implementationType.IsSealed)
-            {
-                throw new ArgumentException($"Implementation type '{serviceType}' is sealed.");
-            }
-
-            if (implementationType.IsAbstract)
-            {
-                throw new ArgumentException($"Implementation type '{serviceType}' is abstract.");
             }
 
             if (serviceType.IsInterface)
