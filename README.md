@@ -2,10 +2,10 @@
 轻代理AOP，实现方法拦截以及入参返回值修改。
 
 <!--TOC-->
-      - [安装](#)
-      - [注意项](#)
-      - [示例](#)
-      - [更新记录](#)
+      - [安装](#安装)
+      - [注意项](#注意项)
+      - [示例](#示例)
+      - [更新记录](#更新记录)
 <!--/TOC-->
 
 ---
@@ -82,7 +82,6 @@ services.AddPureProxy<TestInterceptor>(options =>
     options.AddScoped<Test1Service>();
     options.AddScoped<ITestService, TestService>();
 });
-
 ````
 
 #### 更新记录
