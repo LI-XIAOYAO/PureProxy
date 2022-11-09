@@ -7,6 +7,7 @@
       - [示例](#)
       - [更新记录](#)
 <!--/TOC-->
+
 ---
 
 #### 安装
@@ -86,5 +87,5 @@ services.AddPureProxy<TestInterceptor>(options =>
 
 #### 更新记录
 
-`2022-09-22` 添加局部拦截 `InterceptorAttribute` 特性。 [b6cd619](https://github.com/LI-XIAOYAO/PureProxy/commit/b6cd61959456c8189c973a7af7af2aec4567b2ff)  
+`2022-11-09` 添加局部拦截 `InterceptorAttribute` 特性。 [b6cd619](https://github.com/LI-XIAOYAO/PureProxy/commit/b6cd61959456c8189c973a7af7af2aec4567b2ff)  
 `2022-11-04` 添加抽象服务类代理支持。 [c4f198f](https://github.com/LI-XIAOYAO/PureProxy/commit/c4f198ffeecc40b752182aae221af83a86f34b76)
