@@ -320,7 +320,7 @@ namespace PureProxy
             {
                 var targetMethod = proxyObject.GetType().GetMethod(method.Name, method.GetParameters().Select(c => c.ParameterType).ToArray());
 
-                if (targetMethod.IsDefined(typeof(IgnoreProxyAttribute)) | targetMethod.DeclaringType.IsDefined(typeof(IgnoreProxyAttribute)))
+                if (targetMethod.IsDefined(typeof(IgnoreProxyAttribute)) || targetMethod.DeclaringType.IsDefined(typeof(IgnoreProxyAttribute)))
                 {
                     return targetMethod.Invoke(proxyObject, args);
                 }
@@ -332,7 +332,19 @@ namespace PureProxy
                     Arguments = args
                 };
 
-                Interceptor.Invoke(arguments);
+                // 优先级：方法 > 类型 > 全局
+                if (targetMethod.IsDefined(typeof(InterceptorAttribute)))
+                {
+                    targetMethod.GetCustomAttribute<InterceptorAttribute>().Invoke(arguments);
+                }
+                else if (targetMethod.DeclaringType.IsDefined(typeof(InterceptorAttribute)))
+                {
+                    targetMethod.DeclaringType.GetCustomAttribute<InterceptorAttribute>().Invoke(arguments);
+                }
+                else
+                {
+                    Interceptor.Invoke(arguments);
+                }
 
                 return arguments.Result;
             }
@@ -340,7 +352,7 @@ namespace PureProxy
             {
                 var @delegate = (Delegate)methodObj;
 
-                if (@delegate.Method.IsDefined(typeof(IgnoreProxyAttribute)) | @delegate.Method.DeclaringType.IsDefined(typeof(IgnoreProxyAttribute)))
+                if (@delegate.Method.IsDefined(typeof(IgnoreProxyAttribute)) || @delegate.Method.DeclaringType.IsDefined(typeof(IgnoreProxyAttribute)))
                 {
                     return @delegate.DynamicInvoke(args);
                 }
@@ -352,7 +364,18 @@ namespace PureProxy
                     Arguments = args
                 };
 
-                Interceptor.Invoke(arguments);
+                if (@delegate.Method.IsDefined(typeof(InterceptorAttribute)))
+                {
+                    @delegate.Method.GetCustomAttribute<InterceptorAttribute>().Invoke(arguments);
+                }
+                else if (@delegate.Method.DeclaringType.IsDefined(typeof(InterceptorAttribute)))
+                {
+                    @delegate.Method.DeclaringType.GetCustomAttribute<InterceptorAttribute>().Invoke(arguments);
+                }
+                else
+                {
+                    Interceptor.Invoke(arguments);
+                }
 
                 return arguments.Result;
             }
