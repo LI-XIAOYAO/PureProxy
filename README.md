@@ -20,7 +20,7 @@
 
 #### 示例
 
-````
+````c#
 // 添加全局拦截器
 public class TestInterceptor : IInterceptor
 {
