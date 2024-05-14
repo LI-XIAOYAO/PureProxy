@@ -5,7 +5,6 @@
 - [安装](#安装)
 - [注意项](#注意项)
 - [示例](#示例)
-- [更新记录](#更新记录)
 <!--/TOC-->
 
 ---
@@ -35,15 +34,14 @@ public class TestInterceptor : IInterceptor
 
         // TODO...
         // 修改返回值
-        // args.SetResult("Test");
+        // args.Result = "Test";
     }
 }
 
 // 局部拦截
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class ExceptionAttribute : InterceptorAttribute
 {
-    public override object Invoke(IArguments arguments)
+    public override void Invoke(IArguments arguments)
     {
         try
         {
@@ -56,14 +54,12 @@ public class ExceptionAttribute : InterceptorAttribute
 
             // TODO...
             // 修改返回值
-            // args.SetResult("Test");
+            // args.Result = "Test";
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error: {ex.Message}");
         }
-
-        return default;
     }
 }
 
@@ -82,9 +78,7 @@ services.AddPureProxy<TestInterceptor>(options =>
     options.AddScoped<Test1Service>();
     options.AddScoped<ITestService, TestService>();
 });
+
+// 生成代理类型
+var test3ServiceProxyType = ProxyFactory.ProxyGenerator<Test3Service>();
 ````
-
-#### 更新记录
-
-`2022-11-09` 添加局部拦截 `InterceptorAttribute` 特性。 [b6cd619](https://github.com/LI-XIAOYAO/PureProxy/commit/b6cd61959456c8189c973a7af7af2aec4567b2ff)  
-`2022-11-04` 添加抽象服务类代理支持。 [c4f198f](https://github.com/LI-XIAOYAO/PureProxy/commit/c4f198ffeecc40b752182aae221af83a86f34b76)

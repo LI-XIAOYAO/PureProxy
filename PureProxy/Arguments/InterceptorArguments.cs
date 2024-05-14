@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Reflection;
-using System.Text;
 
 namespace PureProxy
 {
@@ -9,7 +8,9 @@ namespace PureProxy
     /// </summary>
     internal class InterceptorArguments : IArguments
     {
-        public MethodInfo Method { get; set; }
+        public Delegate Delegate { get; set; }
+
+        public MethodInfo Method => Delegate.Method;
 
         public object[] Arguments { get; set; }
 
@@ -19,14 +20,9 @@ namespace PureProxy
 
         public object Result { get; set; }
 
-        public void SetResult(object val)
-        {
-            Result = val;
-        }
-
         public object Invoke()
         {
-            return Result = Method.Invoke(ProxyObject, Arguments);
+            return Result = Delegate.DynamicInvoke(Arguments);
         }
     }
 }

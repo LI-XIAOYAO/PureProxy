@@ -1,17 +1,18 @@
 ﻿using System;
 
-namespace PureProxy.Attributes
+namespace PureProxy
 {
     /// <summary>
     /// 局部拦截特性
     /// </summary>
-    public abstract class InterceptorAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+    public abstract class InterceptorAttribute : Attribute, IInterceptor
     {
         /// <summary>
         /// 调用代理方法
         /// </summary>
-        /// <param name="arguments"></param>
+        /// <param name="args"></param>
         /// <returns></returns>
-        public abstract object Invoke(IArguments arguments);
+        public abstract void Invoke(IArguments args);
     }
 }

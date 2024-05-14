@@ -1,8 +1,6 @@
 ﻿using PureProxy;
 using PureProxy.Options;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -21,10 +19,14 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddPureProxy<TIInterceptor>(this IServiceCollection services, Action<ProxyOptions> options)
             where TIInterceptor : class, IInterceptor, new()
         {
-            ProxyOptions.Services = services;
+            if (services is null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
             ProxyFactory.Interceptor = Activator.CreateInstance<TIInterceptor>();
 
-            options?.Invoke(new ProxyOptions());
+            options?.Invoke(new ProxyOptions(services));
 
             return services;
         }

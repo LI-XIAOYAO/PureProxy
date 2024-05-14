@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PureProxy
+﻿namespace PureProxy
 {
     /// <summary>
     /// 拦截器

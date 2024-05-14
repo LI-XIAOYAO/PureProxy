@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace PureProxy.Attributes
+namespace PureProxy
 {
     /// <summary>
     /// 忽略代理

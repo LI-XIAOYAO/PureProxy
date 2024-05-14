@@ -1,7 +1,4 @@
-﻿using PureProxy.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using PureProxy;
 
 namespace PureProxyTests.Services.Impl
 {

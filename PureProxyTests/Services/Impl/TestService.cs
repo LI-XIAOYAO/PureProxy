@@ -1,7 +1,5 @@
-﻿using PureProxy.Attributes;
+﻿using PureProxyTests.Interceptor;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PureProxyTests.Services.Impl
@@ -12,6 +10,7 @@ namespace PureProxyTests.Services.Impl
         {
         }
 
+        [AttrInterceptor]
         public int Test(int val)
         {
             return val;

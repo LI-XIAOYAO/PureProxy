@@ -1,10 +1,8 @@
 ﻿using PureProxy;
 using PureProxyTests.Services;
-using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PureProxyTests.Proxy
@@ -13,7 +11,7 @@ namespace PureProxyTests.Proxy
     {
         public void Invoke(IArguments args)
         {
-            Console.WriteLine("========================================");
+            Debug.WriteLine("========================================");
 
             if (args.ProxyObject is ITestService && args.Arguments.Length > 1 && typeof(string) == args.Method.GetParameters()[1].ParameterType)
             {
@@ -25,29 +23,29 @@ namespace PureProxyTests.Proxy
             }
 
             var result = args.Invoke();
-            Console.WriteLine($"Method: {args.Method.Name}");
-            Console.WriteLine($"Parameters: {GetMethodInfo(args.Method)}");
-            Console.WriteLine($"Parameters-Val: ({string.Join(",", args.Arguments)})");
+            Debug.WriteLine($"Method: {args.Method.Name}");
+            Debug.WriteLine($"Parameters: {GetMethodInfo(args.Method)}");
+            Debug.WriteLine($"Parameters-Val: ({string.Join(",", args.Arguments)})");
 
             if (result is Task task)
             {
-                Console.WriteLine($"TaskIsCompleted: {task.IsCompleted}");
-                Console.WriteLine($"Return: {(task is Task<int> t ? t.Result.ToString() : null)}");
+                Debug.WriteLine($"TaskIsCompleted: {task.IsCompleted}");
+                Debug.WriteLine($"Return: {(task is Task<int> t ? t.Result.ToString() : null)}");
             }
             else
             {
-                Console.WriteLine($"Return: {result}");
+                Debug.WriteLine($"Return: {result}");
             }
 
             if (args.ProxyObject is ITestService && typeof(int) == args.Method.ReturnType)
             {
-                args.SetResult(55);
+                args.Result = 55;
             }
 
-            Console.WriteLine("========================================");
+            Debug.WriteLine("========================================");
         }
 
-        private string GetMethodInfo(MethodBase method)
+        private static string GetMethodInfo(MethodInfo method)
         {
             return $"({string.Join(", ", method.GetParameters().Select(c => $"{c.ParameterType} {c.Name}"))})";
         }

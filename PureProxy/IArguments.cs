@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
+﻿using System.Reflection;
 
 namespace PureProxy
 {
@@ -21,6 +18,11 @@ namespace PureProxy
         object[] Arguments { get; }
 
         /// <summary>
+        /// 返回值
+        /// </summary>
+        object Result { get; set; }
+
+        /// <summary>
         /// 代理对象
         /// </summary>
         object ProxyObject { get; }
@@ -30,11 +32,5 @@ namespace PureProxy
         /// </summary>
         /// <returns></returns>
         object Invoke();
-
-        /// <summary>
-        /// 设置返回值
-        /// </summary>
-        /// <param name="val"></param>
-        void SetResult(object val);
     }
 }

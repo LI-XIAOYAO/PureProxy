@@ -1,17 +1,25 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using PureProxy.Attributes;
 using System;
 using System.Reflection;
 
 namespace PureProxy.Options
 {
     /// <summary>
-    /// ProxyOptions
+    /// 代理选项
     /// </summary>
     public sealed class ProxyOptions
     {
-        internal static IServiceCollection Services { get; set; }
+        private readonly IServiceCollection _services;
+
+        /// <summary>
+        /// 代理选项
+        /// </summary>
+        /// <param name="services"></param>
+        public ProxyOptions(IServiceCollection services)
+        {
+            _services = services;
+        }
 
         /// <summary>
         /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddSingleton{TService, TImplementation}(IServiceCollection)"/>
@@ -35,8 +43,7 @@ namespace PureProxy.Options
         }
 
         /// <summary>
-        /// <inheritdoc
-        /// cref="ServiceCollectionDescriptorExtensions.TryAddSingleton(IServiceCollection, Type)"/>
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddSingleton(IServiceCollection, Type)"/>
         /// </summary>
         /// <param name="implementationType"></param>
         public void AddSingleton(Type implementationType)
@@ -96,8 +103,7 @@ namespace PureProxy.Options
         }
 
         /// <summary>
-        /// <inheritdoc
-        /// cref="ServiceCollectionDescriptorExtensions.TryAddTransient(IServiceCollection, Type)"/>
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddTransient(IServiceCollection, Type)"/>
         /// </summary>
         /// <param name="implementationType"></param>
         public void AddTransient(Type implementationType)
@@ -106,7 +112,7 @@ namespace PureProxy.Options
         }
 
         /// <summary>
-        /// Add
+        /// <inheritdoc cref="ServiceDescriptor.Describe(Type, Func{IServiceProvider, object}, ServiceLifetime)"/>
         /// </summary>
         /// <param name="serviceType"></param>
         /// <param name="implementationType"></param>
@@ -135,7 +141,7 @@ namespace PureProxy.Options
 
             if (implementationType.IsDefined(typeof(IgnoreProxyAttribute)))
             {
-                Services.TryAdd(ServiceDescriptor.Describe(serviceType, implementationType, lifetime));
+                _services.TryAdd(ServiceDescriptor.Describe(serviceType, implementationType, lifetime));
 
                 return;
             }
@@ -160,10 +166,10 @@ namespace PureProxy.Options
 
             if (serviceType.IsInterface)
             {
-                Services.TryAdd(ServiceDescriptor.Describe(implementationType, implementationType, lifetime));
+                _services.TryAdd(ServiceDescriptor.Describe(implementationType, implementationType, lifetime));
             }
 
-            Services.Replace(ServiceDescriptor.Describe(serviceType, ProxyFactory.ProxyGenerator(serviceType, implementationType), lifetime));
+            _services.Replace(ServiceDescriptor.Describe(serviceType, ProxyFactory.ProxyGenerator(serviceType, implementationType), lifetime));
         }
     }
 }
