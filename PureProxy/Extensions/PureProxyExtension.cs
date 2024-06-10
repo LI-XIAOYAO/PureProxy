@@ -24,7 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(services));
             }
 
-            ProxyFactory.AddInterceptor<TIInterceptor>();
+            PureProxyFactory.AddInterceptor<TIInterceptor>();
 
             options?.Invoke(new ProxyOptions(services));
 

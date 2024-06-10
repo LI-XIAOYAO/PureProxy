@@ -233,7 +233,7 @@ namespace PureProxy.Options
                 }
             }
 
-            _services.Replace(ServiceDescriptor.Describe(serviceType, ProxyFactory.ProxyGenerator(serviceType, implementationType, isProxyProperty ?? _isProxyProperty), lifetime));
+            _services.Replace(ServiceDescriptor.Describe(serviceType, PureProxyFactory.ProxyGenerator(serviceType, implementationType, isProxyProperty ?? _isProxyProperty), lifetime));
         }
     }
 }

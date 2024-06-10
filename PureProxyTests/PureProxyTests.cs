@@ -56,7 +56,7 @@ namespace PureProxy.Tests
             var tcls = test2Service.TestAsync();
             Assert.Equal(1, test2Service.TestAsync(1).GetAwaiter().GetResult());
 
-            var test3ServiceProxyType = ProxyFactory.ProxyGenerator<Test3Service>(true);
+            var test3ServiceProxyType = PureProxyFactory.ProxyGenerator<Test3Service>(true);
             var test3Service = (Test3Service)Activator.CreateInstance(test3ServiceProxyType);
             Assert.Equal("test", test3Service.Test("test"));
             Assert.Equal(0, test3Service.MyProperty);

@@ -11,9 +11,9 @@ using System.Runtime.InteropServices;
 namespace PureProxy
 {
     /// <summary>
-    /// ProxyFactory
+    /// PureProxyFactory
     /// </summary>
-    public static class ProxyFactory
+    public static class PureProxyFactory
     {
         private const string NAMESAPCE_COMPILER_SERVICES = "System.Runtime.CompilerServices";
         private const MethodAttributes PUBLIC_HIDEBYSIG_METHOD_ATTRIBUTES = MethodAttributes.Public | MethodAttributes.HideBySig;
@@ -44,7 +44,7 @@ namespace PureProxy
         /// </summary>
         public static IReadOnlyList<IInterceptor> AttributeInterceptors => _readonlyAttributeInterceptors;
 
-        static ProxyFactory()
+        static PureProxyFactory()
         {
             var assemblyName = new AssemblyName()
             {
@@ -370,7 +370,7 @@ namespace PureProxy
 
                 var IL = constructorBuilder.GetILGenerator();
                 IL.Emit(OpCodes.Ldarg_0);
-                IL.Emit(OpCodes.Call, typeof(ProxyFactory).GetProperty(nameof(Interceptor)).GetMethod);
+                IL.Emit(OpCodes.Call, typeof(PureProxyFactory).GetProperty(nameof(Interceptor)).GetMethod);
                 IL.Emit(OpCodes.Callvirt, typeof(object).GetMethod(nameof(GetType)));
                 IL.Emit(OpCodes.Stfld, InterceptorTypeField);
 
@@ -553,13 +553,13 @@ namespace PureProxy
                             _readonlyAttributeInterceptors = _attributeInterceptors.ToList().AsReadOnly();
                         }
 
-                        IL.Emit(OpCodes.Call, typeof(ProxyFactory).GetProperty(nameof(AttributeInterceptors)).GetMethod);
+                        IL.Emit(OpCodes.Call, typeof(PureProxyFactory).GetProperty(nameof(AttributeInterceptors)).GetMethod);
                         IL.LdcLong(_readonlyAttributeInterceptors.IndexOf(interceptor));
                         IL.Emit(OpCodes.Callvirt, typeof(IReadOnlyList<IInterceptor>).GetMethod("get_Item", new[] { typeof(int) }));
                     }
                     else
                     {
-                        IL.Emit(OpCodes.Call, typeof(ProxyFactory).GetProperty(nameof(Interceptor)).GetMethod);
+                        IL.Emit(OpCodes.Call, typeof(PureProxyFactory).GetProperty(nameof(Interceptor)).GetMethod);
                     }
 
                     IL.Emit(OpCodes.Ldloc_0);

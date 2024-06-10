@@ -74,5 +74,5 @@ services.AddPureProxy<TestInterceptor>(options =>
 });
 
 // 生成代理类型
-var test3ServiceProxyType = ProxyFactory.ProxyGenerator<Test3Service>();
+var test3ServiceProxyType = PureProxyFactory.ProxyGenerator<Test3Service>();
 ````
