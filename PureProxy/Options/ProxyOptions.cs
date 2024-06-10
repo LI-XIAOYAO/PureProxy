@@ -1,24 +1,40 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
+using System.Linq;
 using System.Reflection;
 
 namespace PureProxy.Options
 {
     /// <summary>
-    /// 代理选项
+    /// Proxy 0ptions.
     /// </summary>
     public sealed class ProxyOptions
     {
         private readonly IServiceCollection _services;
+        private bool _isProxyProperty;
 
         /// <summary>
-        /// 代理选项
+        /// Proxy 0ptions.
         /// </summary>
         /// <param name="services"></param>
-        public ProxyOptions(IServiceCollection services)
+        /// <param name="isProxyProperty"></param>
+        public ProxyOptions(IServiceCollection services, bool isProxyProperty = false)
         {
             _services = services;
+            _isProxyProperty = isProxyProperty;
+        }
+
+        /// <summary>
+        /// Whether to proxy properties.
+        /// </summary>
+        /// <param name="isProxyProperty"></param>
+        /// <returns></returns>
+        public ProxyOptions ProxyProperty(bool isProxyProperty = true)
+        {
+            _isProxyProperty = isProxyProperty;
+
+            return this;
         }
 
         /// <summary>
@@ -26,29 +42,43 @@ namespace PureProxy.Options
         /// </summary>
         /// <typeparam name="TService"></typeparam>
         /// <typeparam name="TImplementation"></typeparam>
-        public void AddSingleton<TService, TImplementation>()
+        /// <param name="isProxyProperty"></param>
+        public void AddSingleton<TService, TImplementation>(bool? isProxyProperty = null)
             where TImplementation : class, TService
         {
-            Add(typeof(TService), typeof(TImplementation), ServiceLifetime.Singleton);
+            Add(typeof(TService), typeof(TImplementation), ServiceLifetime.Singleton, isProxyProperty ?? _isProxyProperty);
+        }
+
+        /// <summary>
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddSingleton(IServiceCollection, Type, Type)"/>
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <param name="implementationType"></param>
+        /// <param name="isProxyProperty"></param>
+        public void AddSingleton(Type serviceType, Type implementationType, bool? isProxyProperty = null)
+        {
+            Add(serviceType, implementationType, ServiceLifetime.Singleton, isProxyProperty ?? _isProxyProperty);
         }
 
         /// <summary>
         /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddSingleton{TImplementation}(IServiceCollection)"/>
         /// </summary>
         /// <typeparam name="TImplementation"></typeparam>
-        public void AddSingleton<TImplementation>()
+        /// <param name="isProxyProperty"></param>
+        public void AddSingleton<TImplementation>(bool? isProxyProperty = null)
             where TImplementation : class
         {
-            Add(typeof(TImplementation), typeof(TImplementation), ServiceLifetime.Singleton);
+            Add(typeof(TImplementation), typeof(TImplementation), ServiceLifetime.Singleton, isProxyProperty ?? _isProxyProperty);
         }
 
         /// <summary>
         /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddSingleton(IServiceCollection, Type)"/>
         /// </summary>
         /// <param name="implementationType"></param>
-        public void AddSingleton(Type implementationType)
+        /// <param name="isProxyProperty"></param>
+        public void AddSingleton(Type implementationType, bool? isProxyProperty = null)
         {
-            Add(implementationType, implementationType, ServiceLifetime.Singleton);
+            Add(implementationType, implementationType, ServiceLifetime.Singleton, isProxyProperty ?? _isProxyProperty);
         }
 
         /// <summary>
@@ -56,29 +86,43 @@ namespace PureProxy.Options
         /// </summary>
         /// <typeparam name="TService"></typeparam>
         /// <typeparam name="TImplementation"></typeparam>
-        public void AddScoped<TService, TImplementation>()
+        /// <param name="isProxyProperty"></param>
+        public void AddScoped<TService, TImplementation>(bool? isProxyProperty = null)
             where TImplementation : class, TService
         {
-            Add(typeof(TService), typeof(TImplementation), ServiceLifetime.Scoped);
+            Add(typeof(TService), typeof(TImplementation), ServiceLifetime.Scoped, isProxyProperty ?? _isProxyProperty);
+        }
+
+        /// <summary>
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddScoped(IServiceCollection, Type, Type)"/>
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <param name="implementationType"></param>
+        /// <param name="isProxyProperty"></param>
+        public void AddScoped(Type serviceType, Type implementationType, bool? isProxyProperty = null)
+        {
+            Add(serviceType, implementationType, ServiceLifetime.Scoped, isProxyProperty ?? _isProxyProperty);
         }
 
         /// <summary>
         /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddScoped{TImplementation}(IServiceCollection)"/>
         /// </summary>
         /// <typeparam name="TImplementation"></typeparam>
-        public void AddScoped<TImplementation>()
+        /// <param name="isProxyProperty"></param>
+        public void AddScoped<TImplementation>(bool? isProxyProperty = null)
             where TImplementation : class
         {
-            Add(typeof(TImplementation), typeof(TImplementation), ServiceLifetime.Scoped);
+            Add(typeof(TImplementation), typeof(TImplementation), ServiceLifetime.Scoped, isProxyProperty ?? _isProxyProperty);
         }
 
         /// <summary>
         /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddScoped(IServiceCollection, Type)"/>
         /// </summary>
         /// <param name="implementationType"></param>
-        public void AddScoped(Type implementationType)
+        /// <param name="isProxyProperty"></param>
+        public void AddScoped(Type implementationType, bool? isProxyProperty = null)
         {
-            Add(implementationType, implementationType, ServiceLifetime.Scoped);
+            Add(implementationType, implementationType, ServiceLifetime.Scoped, isProxyProperty ?? _isProxyProperty);
         }
 
         /// <summary>
@@ -86,29 +130,43 @@ namespace PureProxy.Options
         /// </summary>
         /// <typeparam name="TService"></typeparam>
         /// <typeparam name="TImplementation"></typeparam>
-        public void AddTransient<TService, TImplementation>()
+        /// <param name="isProxyProperty"></param>
+        public void AddTransient<TService, TImplementation>(bool? isProxyProperty = null)
             where TImplementation : class, TService
         {
-            Add(typeof(TService), typeof(TImplementation), ServiceLifetime.Transient);
+            Add(typeof(TService), typeof(TImplementation), ServiceLifetime.Transient, isProxyProperty ?? _isProxyProperty);
+        }
+
+        /// <summary>
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddTransient(IServiceCollection, Type, Type)"/>
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <param name="implementationType"></param>
+        /// <param name="isProxyProperty"></param>
+        public void AddTransient(Type serviceType, Type implementationType, bool? isProxyProperty = null)
+        {
+            Add(serviceType, implementationType, ServiceLifetime.Transient, isProxyProperty ?? _isProxyProperty);
         }
 
         /// <summary>
         /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddTransient{TImplementation}(IServiceCollection)"/>
         /// </summary>
         /// <typeparam name="TImplementation"></typeparam>
-        public void AddTransient<TImplementation>()
+        /// <param name="isProxyProperty"></param>
+        public void AddTransient<TImplementation>(bool? isProxyProperty = null)
             where TImplementation : class
         {
-            Add(typeof(TImplementation), typeof(TImplementation), ServiceLifetime.Transient);
+            Add(typeof(TImplementation), typeof(TImplementation), ServiceLifetime.Transient, isProxyProperty ?? _isProxyProperty);
         }
 
         /// <summary>
         /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddTransient(IServiceCollection, Type)"/>
         /// </summary>
         /// <param name="implementationType"></param>
-        public void AddTransient(Type implementationType)
+        /// <param name="isProxyProperty"></param>
+        public void AddTransient(Type implementationType, bool? isProxyProperty = null)
         {
-            Add(implementationType, implementationType, ServiceLifetime.Transient);
+            Add(implementationType, implementationType, ServiceLifetime.Transient, isProxyProperty ?? _isProxyProperty);
         }
 
         /// <summary>
@@ -117,7 +175,8 @@ namespace PureProxy.Options
         /// <param name="serviceType"></param>
         /// <param name="implementationType"></param>
         /// <param name="lifetime"></param>
-        public void Add(Type serviceType, Type implementationType, ServiceLifetime lifetime)
+        /// <param name="isProxyProperty"></param>
+        public void Add(Type serviceType, Type implementationType, ServiceLifetime lifetime, bool? isProxyProperty = null)
         {
             if (null == serviceType)
             {
@@ -131,12 +190,22 @@ namespace PureProxy.Options
 
             if (implementationType.IsSealed)
             {
-                throw new ArgumentException($"Implementation type '{serviceType}' is sealed.");
+                throw new ArgumentException($"Implementation type '{implementationType}' is sealed.");
             }
 
             if (implementationType.IsAbstract)
             {
-                throw new ArgumentException($"Implementation type '{serviceType}' is abstract.");
+                throw new ArgumentException($"Implementation type '{implementationType}' is abstract.");
+            }
+
+            if (!implementationType.IsPublic())
+            {
+                throw new ArgumentException($"Implementation type '{implementationType}' is not public.");
+            }
+
+            if (0 == implementationType.GetConstructors().Count())
+            {
+                throw new ArgumentException($"Implementation type '{implementationType}' not defined public constructors.");
             }
 
             if (implementationType.IsDefined(typeof(IgnoreProxyAttribute)))
@@ -146,9 +215,9 @@ namespace PureProxy.Options
                 return;
             }
 
-            if (!serviceType.IsAssignableFrom(implementationType))
+            if (!serviceType.IsAssignableFromType(implementationType))
             {
-                throw new ArgumentException($"Implementation type '{implementationType}' can't be converted to service type '{serviceType}'.");
+                throw new ArgumentException($"Implementation type '{implementationType}' can't be cast to service type '{serviceType}'.");
             }
 
             if (!serviceType.IsInterface && serviceType == implementationType)
@@ -164,12 +233,7 @@ namespace PureProxy.Options
                 }
             }
 
-            if (serviceType.IsInterface)
-            {
-                _services.TryAdd(ServiceDescriptor.Describe(implementationType, implementationType, lifetime));
-            }
-
-            _services.Replace(ServiceDescriptor.Describe(serviceType, ProxyFactory.ProxyGenerator(serviceType, implementationType), lifetime));
+            _services.Replace(ServiceDescriptor.Describe(serviceType, ProxyFactory.ProxyGenerator(serviceType, implementationType, isProxyProperty ?? _isProxyProperty), lifetime));
         }
     }
 }

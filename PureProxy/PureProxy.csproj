@@ -4,7 +4,7 @@
 		<TargetFrameworks>netstandard2.0;net7.0;net8.0</TargetFrameworks>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<Authors>Lxy</Authors>
-		<Description>轻代理AOP，实现方法拦截以及入参返回值修改。</Description>
+		<Description>轻代理AOP，实现方法、属性拦截以及入参返回值修改。</Description>
 		<PackageTags>Pure;Proxy;DynamicProxy;AOP;Core;Emit</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/LI-XIAOYAO/PureProxy</PackageProjectUrl>
@@ -14,8 +14,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.1" />
 		<PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
+		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
 	</ItemGroup>
 
 	<ItemGroup>

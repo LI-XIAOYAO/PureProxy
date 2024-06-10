@@ -3,7 +3,7 @@
 namespace PureProxy
 {
     /// <summary>
-    /// 忽略代理
+    /// Ignore proxy attribute.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public sealed class IgnoreProxyAttribute : Attribute

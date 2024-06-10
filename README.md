@@ -1,18 +1,12 @@
 # PureProxy
-轻代理AOP，实现方法拦截以及入参返回值修改。
-
-<!--TOC-->
-- [安装](#安装)
-- [注意项](#注意项)
-- [示例](#示例)
-<!--/TOC-->
+轻代理AOP，实现方法、属性拦截以及入参返回值修改。
 
 ---
 
 #### 安装
 > Install-Package PureProxy
 
-#### 注意项
+#### Tips
 - 忽略代理添加 `IgnoreProxyAttribute` 特性
 - 局部拦截实现 `InterceptorAttribute` 特性，优先级：忽略 > 方法 > 类型 > 全局
 - 类代理时需要定义为 `virtual`

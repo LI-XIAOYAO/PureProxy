@@ -1,34 +1,45 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 
 namespace PureProxy
 {
     /// <summary>
-    /// 拦截器参数
+    /// Interceptor arguments.
     /// </summary>
     public interface IArguments
     {
         /// <summary>
-        /// 代理方法
+        /// Proxy method.
         /// </summary>
         MethodInfo Method { get; }
 
         /// <summary>
-        /// 入参
+        /// Proxy parameter types.
+        /// </summary>
+        Type[] ParameterTypes { get; }
+
+        /// <summary>
+        /// Proxy return type.
+        /// </summary>
+        Type ReturnType { get; }
+
+        /// <summary>
+        /// Proxy arguments.
         /// </summary>
         object[] Arguments { get; }
 
         /// <summary>
-        /// 返回值
+        /// Proxy return value.
         /// </summary>
         object Result { get; set; }
 
         /// <summary>
-        /// 代理对象
+        /// Proxy object.
         /// </summary>
         object ProxyObject { get; }
 
         /// <summary>
-        /// 调用代理方法
+        /// Invoke original method.
         /// </summary>
         /// <returns></returns>
         object Invoke();

@@ -1,10 +1,9 @@
 ﻿using PureProxy;
-using System;
 using System.Diagnostics;
 
 namespace PureProxyTests.Interceptor
 {
-    internal class AttrInterceptorAttribute : InterceptorAttribute
+    internal class PropAttrInterceptorAttribute : InterceptorAttribute
     {
         public override void Invoke(IArguments args)
         {
@@ -12,7 +11,10 @@ namespace PureProxyTests.Interceptor
             Debug.WriteLine(args.Arguments);
             Debug.WriteLine(args.Invoke());
 
-            args.Result = args.ReturnType != typeof(void) ? Activator.CreateInstance(args.ReturnType) : null;
+            if (typeof(int) == args.ReturnType)
+            {
+                args.Result = 1;
+            }
         }
     }
 }

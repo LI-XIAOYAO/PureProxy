@@ -2,8 +2,6 @@
 using PureProxyTests.Services;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 
 namespace PureProxyTests.Proxy
 {
@@ -13,29 +11,21 @@ namespace PureProxyTests.Proxy
         {
             Debug.WriteLine("========================================");
 
-            if (args.ProxyObject is ITestService && args.Arguments.Length > 1 && typeof(string) == args.Method.GetParameters()[1].ParameterType)
+            if (args.ProxyObject is ITestService && args.ParameterTypes.Length > 1 && typeof(string) == args.ParameterTypes[1])
             {
                 args.Arguments[1] = "10";
             }
-            else if (args.ProxyObject is ITest1Service && args.Arguments.Length > 1 && typeof(string) == args.Method.GetParameters()[1].ParameterType)
+            else if (args.ProxyObject is ITest1Service && args.Arguments.Length > 1 && typeof(string) == args.ParameterTypes[1])
             {
                 args.Arguments[1] = "20";
             }
 
             var result = args.Invoke();
-            Debug.WriteLine($"Method: {args.Method.Name}");
-            Debug.WriteLine($"Parameters: {GetMethodInfo(args.Method)}");
-            Debug.WriteLine($"Parameters-Val: ({string.Join(",", args.Arguments)})");
 
-            if (result is Task task)
-            {
-                Debug.WriteLine($"TaskIsCompleted: {task.IsCompleted}");
-                Debug.WriteLine($"Return: {(task is Task<int> t ? t.Result.ToString() : null)}");
-            }
-            else
-            {
-                Debug.WriteLine($"Return: {result}");
-            }
+            Debug.WriteLine($"Method: {args.Method.Name}");
+            Debug.WriteLine($"Parameters: {$"({string.Join(", ", args.ParameterTypes.ToList())})"}");
+            Debug.WriteLine($"Parameters-Val: ({string.Join(",", args.Arguments)})");
+            Debug.WriteLine($"Result: {result}");
 
             if (args.ProxyObject is ITestService && typeof(int) == args.Method.ReturnType)
             {
@@ -43,11 +33,6 @@ namespace PureProxyTests.Proxy
             }
 
             Debug.WriteLine("========================================");
-        }
-
-        private static string GetMethodInfo(MethodInfo method)
-        {
-            return $"({string.Join(", ", method.GetParameters().Select(c => $"{c.ParameterType} {c.Name}"))})";
         }
     }
 }

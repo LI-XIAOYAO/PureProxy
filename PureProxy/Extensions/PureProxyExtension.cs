@@ -5,16 +5,16 @@ using System;
 namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
-    /// 代理扩展
+    /// PureProxy extension.
     /// </summary>
     public static class PureProxyExtension
     {
         /// <summary>
-        /// 添加代理
+        /// Adds a proxy.
         /// </summary>
-        /// <typeparam name="TIInterceptor">拦截器</typeparam>
+        /// <typeparam name="TIInterceptor"></typeparam>
         /// <param name="services"></param>
-        /// <param name="options">代理选项</param>
+        /// <param name="options"></param>
         /// <returns></returns>
         public static IServiceCollection AddPureProxy<TIInterceptor>(this IServiceCollection services, Action<ProxyOptions> options)
             where TIInterceptor : class, IInterceptor, new()
@@ -24,7 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(services));
             }
 
-            ProxyFactory.Interceptor = Activator.CreateInstance<TIInterceptor>();
+            ProxyFactory.AddInterceptor<TIInterceptor>();
 
             options?.Invoke(new ProxyOptions(services));
 

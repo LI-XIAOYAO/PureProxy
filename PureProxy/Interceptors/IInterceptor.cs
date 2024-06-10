@@ -1,12 +1,12 @@
 ﻿namespace PureProxy
 {
     /// <summary>
-    /// 拦截器
+    /// Interceptor.
     /// </summary>
     public interface IInterceptor
     {
         /// <summary>
-        /// 代理方法处理
+        /// Proxy method handling.
         /// </summary>
         /// <param name="args"></param>
         void Invoke(IArguments args);
